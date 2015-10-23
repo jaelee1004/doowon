@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+<!-- kr/ac/doowon/spring/config.xml (설정등록, 빈등록 관리) -->
+   <mvc:annotation-driven/>
+   
+   <!-- JSP요청이 들어왔을때 Tomcat이 처리해라 -->
+   <mvc:default-servlet-handler/>
+   
+   <!-- 뷰리졸버 정의 -->
+   <mvc:view-resolvers>
+      <mvc:jsp prefix="/WEB-INF/view/"/>
+      <!-- SpringMVC/WEB-INF/view/ 전달될 뷰이름 .jsp  -->
+   </mvc:view-resolvers> 
+   
+   <!-- 컨트롤러 스캔 -->
+   <context:component-scan base-package="kr.ac.doowon.control"/>
+    
+   <!-- DataSource설정(DB연결) --> 
+   <bean class="org.apache.tomcat.jdbc.pool.DataSource"
+         id="driverManagerDataSource">
+     <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+     <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+     <property name="username" value="javauser"/>
+     <property name="password" value="1234"/>
+   </bean> 
+   
+   <!-- MyBatis설정 -->
+   <bean class="org.mybatis.spring.SqlSessionFactoryBean"
+         id="sqlSessionFactoryBean">
+     <property name="dataSource" ref="driverManagerDataSource"/>
+     <property name="mapperLocations" 
+               value="classpath:kr/ac/doowon/model/mybatis/*.xml">
+       <!-- <list>
+          <value>classpath:kr/ac/doowon/model/mybatis/person.xml</value>
+          <value>classpath:kr/ac/doowon/model/mybatis/emp.xml</value>
+          <value>classpath:kr/ac/doowon/model/mybatis/bb.xml</value>
+       </list> -->
+     </property>      
+   </bean>
+   
+   <!-- SqlSession객체생성 -->
+   <bean class="org.mybatis.spring.SqlSessionTemplate">
+      <constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+   </bean>
+   
+   <!-- 트랜잭션 설정 -->
+   <bean id="transactionManager" 
+   class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="driverManagerDataSource"></property>
+   </bean>
+   
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="person">    
+   <insert id="insert" parameterType="kr.ac.doowon.model.beans.Person">
+     insert into person values (#{name}, #{age}, #{job})
+   </insert>
+   <select id="selectAll" resultType="kr.ac.doowon.model.beans.Person">
+     select name,age,job from person 
+   </select>
+   
+   <!-- 수정폼에 출력할 데이터 조회 -->
+   <select id="select" parameterType="string"
+           resultType="kr.ac.doowon.model.beans.Person">
+     select name,age,job from person where name=#{name}
+   </select>
+   
+   <update id="update" parameterType="kr.ac.doowon.model.beans.Person">
+     update person set age=#{age}, job=#{job} where name=#{name}
+   </update>
+   
+   <delete id="delete" parameterType="String">
+     delete from person where name=#{name}
+   </delete>
+</mapper>
+<!-- person.xml -->
+
+
+
+
+
+
